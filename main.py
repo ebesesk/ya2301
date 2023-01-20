@@ -1,43 +1,46 @@
 from fastapi import FastAPI
 
-from config import setting
+from src.core.config import settings
+from src.db.session import engine
+from src.db.base import Base
+from src.apis.base import api_router
 
-description = """
-## This is the YA2301 created in FastAPI 0.89.1
-It has only one route *index*
-"""
+def create_tables():
+    Base.metadata.create_all(bind=engine)
 
-tags = [
-    {
-        "name" : "user",
-        "description" : "These are my user related routes"
-    },
-    {
-        "name" : "product",
-        "description" : "There are my product related routes"
-    }
-]
+def include_router(app):
+    app.include_router(api_router)
+
+def start_application():
+    app = FastAPI(
+        title = settings.TITLE,
+        version = settings.VERSION,
+        description = settings.DESCRIPTION,
+        contact = {"name": settings.NAME, "email": settings.EMAIL },
+        # openapi_tags = tags,
+        openapi_url="/api/v1/openapi.json",
+        max_size = 3221225472,
+    )
+    create_tables()
+    include_router(app)
+    return app
+
+app = start_application()
 
 
-app = FastAPI(
-    title = setting.TITLE,
-    description = setting.DESCRIPTION,
-    version = setting.VERSION,
-    contact = {
-        "name": setting.NAME,
-        "email": setting.EMAIL
-    },
-    openapi_tags = tags,
-    openapi_url="/api/v1/openapi.json",
-)
 
-@app.get('/user', tags=["user"])
-def get_user():
-    return {"message" : "hello user"}
 
-@app.get('/product', tags=["product"])
-def get_product():
-    return {"message" : "hello Product"}
+# @app.get('/user', tags=["user"])
+# def get_user():
+#     return {"message" : "hello user"}
+
+# @app.get('/product', tags=["product"])
+# def get_product():
+#     return {"message" : "hello Product"}
+
+# @app.get('/getenvvar', tags=["config"])
+# def get_envvars():
+#     return {"database" : setting.TITLE}
 
 
 

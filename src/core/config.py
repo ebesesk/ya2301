@@ -9,5 +9,9 @@ class Settings:
     DESCRIPTION = os.getenv("DESCRIPTION")
     NAME = os.getenv("NAME")
     EMAIL = os.getenv("EMAIL")
+    
+    ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    ALGORITHM = os.getenv("ALGORITHM")
 
-setting = Settings()
+settings = Settings()
