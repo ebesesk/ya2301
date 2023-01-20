@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from config import setting
 
 description = """
 ## This is the YA2301 created in FastAPI 0.89.1
@@ -19,12 +20,12 @@ tags = [
 
 
 app = FastAPI(
-    title = "YA2301",
-    description = description,
-    version = "0.1.0",
+    title = setting.TITLE,
+    description = setting.DESCRIPTION,
+    version = setting.VERSION,
     contact = {
-        "name": "KIMDAESUNG",
-        "email": "kddddds@gmail.com"
+        "name": setting.NAME,
+        "email": setting.EMAIL
     },
     openapi_tags = tags,
     openapi_url="/api/v1/openapi.json",
@@ -40,7 +41,7 @@ def get_product():
 
 
 
-# uvicorn main:app --host 0.0.0.0 --port 7443
+# uvicorn main:app --host 0.0.0.0 --port 7443 --reload
 
 # gunicorn -k uvicorn.workers.UvicornWorker --access-logfile ./gunicorn-access.log main:app --bind 0.0.0.0:8000 --workers 2 --daemon
 # -k uvicorn.workers.UvicornWorker: Uvicorn worker 클래스를 사용합니다.
